@@ -1,6 +1,7 @@
 import os
 import shutil
 import cv2
+import pandas as pd
 
 from matplotlib import pyplot as plt
 
@@ -25,9 +26,9 @@ def copy_annotated_images(source_dir: str,
         shutil.copyfile(src, dst)
 
 
-def plot_yolo_format_annotated_image(img_path: str, annotation_path: str):
+def plot_xywhn_annotated_image_from_file(img_path: str, annotation_path: str):
     """
-    Plot image with bounding box.
+    Plot image with bounding box from annotation file.
 
     :param img_path: path to image
     :param annotation_path: txt file with yolo format annotation
@@ -44,6 +45,27 @@ def plot_yolo_format_annotated_image(img_path: str, annotation_path: str):
         x2, y2 = x1 + sample_w, y1 + sample_h
         cv2.rectangle(img, (int(x1), int(y1)), (int(x2), int(y2)), (0, 0, 255), 2)
     annotation_file.close()
+
+    plt.figure(figsize=(12, 8))
+    plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+
+
+def plot_xywhn_annotated_image_from_df(img_path: str, df_annotation: pd.DataFrame):
+    """
+    Plot image with bounding box from dataframe.
+
+    :param img_path: path to image
+    :param df_annotation: dataframe with xywhn format annotation
+    """
+    img = cv2.imread(img_path)
+    height, width, _ = img.shape
+
+    for index, row in df_annotation.iterrows():
+        sample_w = float(row['width']) * width
+        sample_h = float(row['height']) * height
+        x1, y1 = float(row['xcenter']) * width - sample_w / 2, float(row['ycenter']) * height + sample_h / 2
+        x2, y2 = x1 + sample_w, y1 - sample_h
+        cv2.rectangle(img, (int(x1), int(y1)), (int(x2), int(y2)), (0, 0, 255), 2)
 
     plt.figure(figsize=(12, 8))
     plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
