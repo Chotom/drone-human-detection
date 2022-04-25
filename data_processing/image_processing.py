@@ -42,7 +42,7 @@ def plot_xywhn_annotated_image_from_file(img_path: str, annotation_path: str):
         sample_w = float(sample[3]) * width
         sample_h = float(sample[4]) * height
         x1, y1 = float(sample[1]) * width - sample_w / 2, float(sample[2]) * height + sample_h / 2
-        x2, y2 = x1 + sample_w, y1 + sample_h
+        x2, y2 = x1 + sample_w, y1 - sample_h
         cv2.rectangle(img, (int(x1), int(y1)), (int(x2), int(y2)), (0, 0, 255), 2)
     annotation_file.close()
 
