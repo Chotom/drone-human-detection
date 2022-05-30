@@ -1,6 +1,8 @@
 import os
 import shutil
 import cv2
+import numpy as np
+from numpy.linalg import norm
 import pandas as pd
 
 from matplotlib import pyplot as plt
@@ -41,8 +43,8 @@ def plot_xywhn_annotated_image_from_file(img_path: str, annotation_path: str):
         sample = annotation.split(' ')
         sample_w = float(sample[3]) * width
         sample_h = float(sample[4]) * height
-        x1, y1 = float(sample[1]) * width - sample_w / 2, float(sample[2]) * height + sample_h / 2
-        x2, y2 = x1 + sample_w, y1 - sample_h
+        x1, y1 = float(sample[1]) * width - sample_w / 2, float(sample[2]) * height - sample_h / 2
+        x2, y2 = x1 + sample_w, y1 + sample_h
         cv2.rectangle(img, (int(x1), int(y1)), (int(x2), int(y2)), (0, 0, 255), 2)
     annotation_file.close()
 
@@ -63,9 +65,44 @@ def plot_xywhn_annotated_image_from_df(img_path: str, df_annotation: pd.DataFram
     for index, row in df_annotation.iterrows():
         sample_w = float(row['width']) * width
         sample_h = float(row['height']) * height
-        x1, y1 = float(row['xcenter']) * width - sample_w / 2, float(row['ycenter']) * height + sample_h / 2
-        x2, y2 = x1 + sample_w, y1 - sample_h
+        x1, y1 = float(row['xcenter']) * width - sample_w / 2, float(row['ycenter']) * height - sample_h / 2
+        x2, y2 = x1 + sample_w, y1 + sample_h
         cv2.rectangle(img, (int(x1), int(y1)), (int(x2), int(y2)), (0, 0, 255), 2)
 
     plt.figure(figsize=(12, 8))
     plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+
+
+def get_brightness_stats(source_dir: str) -> pd.DataFrame:
+    """
+    Calculate avg brightness for every image in given source directory.
+
+    :param source_dir: Path to directory with images.
+    :return: Dataframe with 'filename', 'avg brightness' columns.
+    """
+    stats: list[list[str, float]] = []
+
+    for filename in os.listdir(source_dir):
+        img = cv2.imread(f'{source_dir}/{filename}')
+        # For RGB
+        if len(img.shape) == 3:
+            stats.append([filename, np.average(norm(img, axis=2)) / np.sqrt(3)])
+        # Grayscale
+        else:
+            stats.append([filename, np.average(img)])
+    return pd.DataFrame(stats, columns=['filename', 'avg brightness'])
+
+
+def get_number_of_objects_stats(source_dir: str) -> pd.DataFrame:
+    """
+    Calculate number of objects in every image in given source directory.
+
+    :param source_dir: Path to directory with annotations.
+    :return: Dataframe with 'filename', 'avg brightness' columns.
+    """
+    stats: list[list[str, int]] = []
+
+    for filename in os.listdir(source_dir):
+        annotations = pd.read_csv(f'{source_dir}/{filename}', dtype=str, sep=' ')
+        stats.append([filename, len(annotations.index)])
+    return pd.DataFrame(stats, columns=['filename', 'number of objects'])
