@@ -2,6 +2,7 @@ import os
 import shutil
 import cv2
 import pandas as pd
+import numpy as np
 
 from matplotlib import pyplot as plt
 
@@ -69,3 +70,24 @@ def plot_xywhn_annotated_image_from_df(img_path: str, df_annotation: pd.DataFram
 
     plt.figure(figsize=(12, 8))
     plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+
+
+def plot_xywhn_annotated_array_from_df(img: np.array, df_annotation: pd.DataFrame):
+    """
+    Plot image with bounding box from dataframe.
+
+    :param img: image array
+    :param df_annotation: dataframe with xywhn format annotation
+    """
+    img_copy = img.copy()
+    height, width, _ = img_copy.shape
+
+    for index, row in df_annotation.iterrows():
+        sample_w = float(row['width']) * width
+        sample_h = float(row['height']) * height
+        x1, y1 = float(row['xcenter']) * width - sample_w / 2, float(row['ycenter']) * height - sample_h / 2
+        x2, y2 = x1 + sample_w, y1 + sample_h
+        cv2.rectangle(img_copy, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
+
+    plt.figure(figsize=(12, 8))
+    plt.imshow(img_copy)
