@@ -1,15 +1,28 @@
 # Drone-human-detection
 
----
-
 A research project to develop a machine learning-based system using computer vision to support human search operations
 using a multimodal drone camera.
 
 ## Datasets
 
+Processed data is stored in `./data/processed/{dataset_name}` directory and grouped into train, validate and test
+datasets.
+
 List of used datasets in the project. Follow instructions in notebooks to prepare data.
 
-| Dataset name              | Data preparation notebook                                                              | Source                                                                   |
-|---------------------------|----------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
-| VisDrone Object Detection | [visdrone_object_detection](data_processing/notebooks/visdrone_object_detection.ipynb) | [Link - aiskyeye.com](http://aiskyeye.com/download/object-detection-2/)  |
+| Dataset name              | Data preparation notebook                                                              | Source                                                                  | Resolutions                      |
+|---------------------------|----------------------------------------------------------------------------------------|-------------------------------------------------------------------------|----------------------------------|
+| VisDrone Object Detection | [visdrone_object_detection](data_processing/notebooks/visdrone_object_detection.ipynb) | [Link - aiskyeye.com](http://aiskyeye.com/download/object-detection-2/) | Various (and scales 4:3 or 16:9) |
+| Private Dataset           | [private_dataset](data_processing/notebooks/private_dataset.ipynb)                     | Unavailable at this moment                                              |                                  |
+| RGB Combined Dataset      | [rgb_combined_dataset](data_processing/notebooks/rgb_combined_dataset.ipynb)           | Processed and combined RGB datasets                                     |                                  |
+| RGB Augmented Dataset     | [rgb_augmented_dataset](data_processing/notebooks/rgb_augmented_dataset.ipynb)         | Processed and combined RGB datasets with augmentation                   |                                  |
 
+## Data augmentation
+
+Data augmentation methods are stored in `./data_processing/image_augmentation.py` file.
+
+| Augmentation method          | Example image | Augmented image |
+|------------------------------|---------------|-----------------|
+| selected crop (with objects) |               |                 |
+| rotation                     |               |                 |
+| rain (noise)                 |               |                 |

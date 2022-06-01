@@ -50,7 +50,7 @@ def from_xywh_to_xywhn_format(source_dir: str, result_dir: str, img_source_dir: 
 
         # Scaling
         annotations['x_center'] = (annotations['x_left'] + (annotations['width'] / 2)) / width
-        annotations['y_center'] = (annotations['y_top'] - (annotations['height'] / 2)) / height
+        annotations['y_center'] = (annotations['y_top'] + (annotations['height'] / 2)) / height
         annotations['scaled_width'] = annotations['width'] / width
         annotations['scaled_height'] = annotations['height'] / height
 
