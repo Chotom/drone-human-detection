@@ -5,18 +5,6 @@ import shutil
 import cv2
 from matplotlib import pyplot as plt
 
-ROOT_DIR = 'C:/Users/enhet/Desktop/drone-human-detection-dev'
-
-TRAIN_DIR = f'{ROOT_DIR}/data/source/tiny_people/train'
-TEST_DIR = f'{ROOT_DIR}/data/source/tiny_people/test'
-
-TRAIN_PROCESSED_DIR = f'{ROOT_DIR}/data/processed/tiny_people/train'
-TEST_PROCESSED_DIR = f'{ROOT_DIR}/data/processed/tiny_people/test'
-VALIDATE_PROCESSED_DIR = f'{ROOT_DIR}/data/processed/tiny_people/validate'
-
-TRAIN_ANNO_DIR = f'{TRAIN_DIR}/tiny_set_train.json'
-TEST_ANNO_DIR = f'{TEST_DIR}/tiny_set_test.json'
-
 def from_tiny_people_json_to_xywhn_yolo_format(json_source: str, anno_result_dir:str):
     os.makedirs(anno_result_dir, exist_ok=True)
     yolo_cols = ['class', 'x_center', 'y_center', 'width', 'height']
@@ -106,16 +94,3 @@ def plot_xywhn_annotated_image_from_file(img_path:str, annotation_path:str):
     annotation_file.close()
     plt.figure(figsize=(12, 8))
     plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-
-# from_tiny_people_json_to_xywhn_yolo_format(TEST_ANNO_DIR,f'{TEST_PROCESSED_DIR}/labels')
-# copy_tiny_people_images_to_given_dir(f'{TEST_DIR}/labeled_images',f'{TEST_PROCESSED_DIR}/images')
-
-# from_tiny_people_json_to_xywhn_yolo_format(TRAIN_ANNO_DIR,f'{TRAIN_PROCESSED_DIR}/labels')
-# copy_tiny_people_images_to_given_dir(f'{TRAIN_DIR}/labeled_images',f'{TRAIN_PROCESSED_DIR}/images')
-
-# split_test_into_validation_set(TEST_PROCESSED_DIR,VALIDATE_PROCESSED_DIR)
-
-# img_path = "C:/Users/enhet/Desktop/drone-human-detection-dev/data/processed/tiny_people/train/images/bb_V0014_I0000120.jpg"
-# annotation_path = "C:/Users/enhet/Desktop/drone-human-detection-dev/data/processed/tiny_people/train/labels/bb_V0014_I0000120.txt"
-
-# clean_up_bboxes_in_blurred_areas("C:/Users/enhet/Desktop/drone-human-detection-dev/data/processed/tiny_people/train/labels/","C:/Users/enhet/Desktop/drone-human-detection-dev/data/processed/tiny_people/validate/labels/","C:/Users/enhet/Desktop/drone-human-detection-dev/data/processed/tiny_people/test/labels/")
