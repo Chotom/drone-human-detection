@@ -3,8 +3,6 @@ import os
 import random
 import shutil
 import cv2
-from matplotlib import pyplot as plt
-
 
 def from_tiny_people_json_to_xywhn_yolo_format(json_source: str, img_source_dir: str, anno_result_dir: str):
     os.makedirs(anno_result_dir, exist_ok=True)
@@ -97,17 +95,3 @@ def split_test_into_validation_set(source_dir: str, result_dir: str):
             shutil.move(f'{source_dir}/labels/{clipped_filename}.txt', f'{result_dir}/labels/{clipped_filename}.txt')
 
 
-def plot_xywhn_annotated_image_from_file(img_path: str, annotation_path: str):
-    img = cv2.imread(img_path)
-    height, width, _ = img.shape
-    annotation_file = open(annotation_path)
-    for annotation in annotation_file.readlines():
-        sample = annotation.split(' ')
-        sample_w = float(sample[3])
-        sample_h = float(sample[4])
-        x1, y1 = float(sample[1]) - sample_w / 2, float(sample[2]) - sample_h / 2
-        x2, y2 = x1 + sample_w, y1 + sample_h
-        cv2.rectangle(img, (int(x1), int(y1)), (int(x2), int(y2)), (0, 0, 255), 2)
-    annotation_file.close()
-    plt.figure(figsize=(12, 8))
-    plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
