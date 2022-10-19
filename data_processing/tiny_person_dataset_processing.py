@@ -70,6 +70,23 @@ def clean_up_bboxes_in_blurred_areas(train_path: str, validation_path: str, test
                     file.write(line)
                 file.close()
 
+                
+def clean_up_annotations(train_path: str, validation_path: str, test_path: str):
+    dirs = [train_path, validation_path, test_path]
+    for dir in dirs:
+        for path in os.listdir(dir):
+            file_path = dir + path
+            file = open(file_path, 'r')
+            lines = file.readlines()
+            file.close()
+            file = open(file_path, 'w')
+            for line in lines:
+                temp = line.split(' ')
+                for i in range(5):
+                    file.write(temp[i] + ' ')
+                file.writelines('\n')
+            file.close()
+                
 
 def copy_tiny_people_images_to_given_dir(img_source_dir: str, img_result_dir: str):
     os.makedirs(img_result_dir, exist_ok=True)
@@ -80,18 +97,26 @@ def copy_tiny_people_images_to_given_dir(img_source_dir: str, img_result_dir: st
             shutil.copyfile(f'{img_source_dir}/{path}', f'{img_result_dir}/{path}')
 
 
-def split_test_into_validation_set(source_dir: str, result_dir: str):
-    os.makedirs(f'{result_dir}/images', exist_ok=True)
-    os.makedirs(f'{result_dir}/labels', exist_ok=True)
+def split_test_into_validation_set(source_dir: str, train_dir:str, validate_str: str):
+    os.makedirs(f'{validate_str}/images', exist_ok=True)
+    os.makedirs(f'{validate_str}/labels', exist_ok=True)
     files = os.listdir(f'{source_dir}/images/')
     number_of_photos_total = len(files)
-    validate_photos_number = int(0.75 * number_of_photos_total)
+    train_photos = 181
+    validate_photos_number = int(0.5 * (number_of_photos_total - train_photos))
     random.shuffle(files)
-    val_filenames = files[:validate_photos_number]
+    train_filenames = files[:train_photos]
+    for filename in train_filenames:
+        clipped_filename = filename.split('.')[0]
+        if os.path.isfile(f'{source_dir}/images/{filename}'):
+            shutil.move(f'{source_dir}/images/{filename}', f'{train_dir}/images/{filename}')
+            shutil.move(f'{source_dir}/labels/{clipped_filename}.txt', f'{train_dir}/labels/{clipped_filename}.txt')
+    val_filenames = files[train_photos:train_photos+validate_photos_number]
     for filename in val_filenames:
         clipped_filename = filename.split('.')[0]
         if os.path.isfile(f'{source_dir}/images/{filename}'):
-            shutil.move(f'{source_dir}/images/{filename}', f'{result_dir}/images/{filename}')
-            shutil.move(f'{source_dir}/labels/{clipped_filename}.txt', f'{result_dir}/labels/{clipped_filename}.txt')
+            shutil.move(f'{source_dir}/images/{filename}', f'{validate_str}/images/{filename}')
+            shutil.move(f'{source_dir}/labels/{clipped_filename}.txt', f'{validate_str}/labels/{clipped_filename}.txt')
+
 
 
