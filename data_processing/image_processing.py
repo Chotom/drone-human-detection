@@ -127,3 +127,22 @@ def get_number_of_objects_stats(source_dir: str) -> pd.DataFrame:
         annotations = pd.read_csv(f'{source_dir}/{filename}', dtype=str, sep=' ')
         stats.append([filename, len(annotations.index)])
     return pd.DataFrame(stats, columns=['filename', 'number of objects'])
+
+
+def remove_xywhn_img_with_small_obj_from_dir(img_source_dir: str, source_dir: str):
+    """
+
+    :param source_dir:
+    :param img_source_dir:
+    :return:
+    """
+
+    for filename in os.listdir(source_dir):
+
+        annotations = pd.read_csv(f'{source_dir}/{filename}', sep=' ', names=['class', 'x', 'y', 'w', 'h'])
+
+        h_is_small: pd.Series = annotations['h'] < 0.05
+        if h_is_small.any():
+            print(f'{source_dir}/{filename}')
+            os.remove(f'{source_dir}/{filename}')
+            os.remove(f'{img_source_dir}/{filename.split(".")[0]}.jpg')
