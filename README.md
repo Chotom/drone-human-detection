@@ -10,16 +10,17 @@ datasets.
 
 List of used datasets in the project. Follow instructions in notebooks to prepare data.
 
-| Dataset name                | Data preparation notebook                                                              | Source                                                                                |
-|-----------------------------|----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| VisDrone Object Detection   | [visdrone_object_detection](data_processing/notebooks/visdrone_object_detection.ipynb) | [Link - aiskyeye.com](http://aiskyeye.com/download/object-detection-2/)               |
-| Heridal IPSAR               | [heridal_ipsar](data_processing/notebooks/heridal_ipsar.ipynb)                         | [Link - ipsar.fesb.unist.hr](http://ipsar.fesb.unist.hr/HERIDAL%20database.html)      |
-| Tiny Person                 | [tiny person](data_processing/notebooks/tiny_person_dataset.ipynb)                     | [Link - github.com](https://github.com/ucas-vg/PointTinyBenchmark/tree/TinyBenchmark) |
-| SARD                        | [SARD](data_processing/notebooks/sard.ipynb)                                           | [Link - ieee-dataport.org](https://ieee-dataport.org/documents/search-and-rescue-image-dataset-person-detection-sard)        |
-| HIT-UAV                        | [HIT-UAV](data_processing/notebooks/HITUAV_dataset.ipynb)                                           | [Link - github.com](https://github.com/suojiashun/hit-uav-infrared-thermal-dataset)        |
-| Private Dataset             | [private_dataset](data_processing/notebooks/private_dataset.ipynb)                     | Unavailable at this moment                                                            |
-| RGB Combined Dataset        | [rgb_combined_dataset](data_processing/notebooks/rgb_combined_dataset.ipynb)           | Processed and combined RGB datasets                                                   |
-| TODO: RGB Augmented Dataset | [rgb_augmented_dataset](data_processing/notebooks/rgb_augmented_dataset.ipynb)         | Processed and combined RGB datasets with augmentation                                 |
+| Dataset name                | Data preparation notebook                                                               | Source                                                                                                                |
+|-----------------------------|-----------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| VisDrone Object Detection   | [visdrone_object_detection](data_processing/notebooks/visdrone_object_detection.ipynb)  | [Link - aiskyeye.com](http://aiskyeye.com/download/object-detection-2/)                                               |
+| Heridal IPSAR               | [heridal_ipsar](data_processing/notebooks/heridal_ipsar.ipynb)                          | [Link - ipsar.fesb.unist.hr](http://ipsar.fesb.unist.hr/HERIDAL%20database.html)                                      |
+| Tiny Person                 | [tiny person](data_processing/notebooks/tiny_person_dataset.ipynb)                      | [Link - github.com](https://github.com/ucas-vg/PointTinyBenchmark/tree/TinyBenchmark)                                 |
+| SARD                        | [SARD](data_processing/notebooks/sard.ipynb)                                            | [Link - ieee-dataport.org](https://ieee-dataport.org/documents/search-and-rescue-image-dataset-person-detection-sard) |
+| HIT-UAV                     | [HIT-UAV](data_processing/notebooks/HITUAV_dataset.ipynb)                               | [Link - github.com](https://github.com/suojiashun/hit-uav-infrared-thermal-dataset)                                   |
+| ASL ETH FLIR                | [asl_eth_flir](data_processing/notebooks/asl_eth_flir_dataset.ipynb)                    | [Link - projects.asl.ethz.ch](https://projects.asl.ethz.ch/datasets/doku.php?id=ir:iricra2014)                        |
+| Private Dataset             | [private_dataset](data_processing/notebooks/private_dataset.ipynb)                      | Unavailable at this moment                                                                                            |
+| RGB Combined Dataset        | [rgb_combined_dataset](data_processing/notebooks/rgb_combined_dataset.ipynb)            | Processed and combined RGB datasets                                                                                   |
+| TODO: RGB Augmented Dataset | [rgb_augmented_dataset](data_processing/notebooks/rgb_augmented_dataset.ipynb)          | Processed and combined RGB datasets with augmentation                                                                 |
 
 ## Data augmentation
 
