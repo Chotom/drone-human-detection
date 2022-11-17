@@ -89,3 +89,44 @@ def selected_crop(image_path: str,
             df_annotation = pd.DataFrame(transformed_max_annotation, columns=['x', 'y', 'w', 'h', 'label'])
             df_annotation = df_annotation[['label', 'x', 'y', 'w', 'h']]
             df_annotation.to_csv(annotation_filename, sep=' ', header=False, index=False)
+
+
+def augmentation(image_path: str,
+                  annotation_path: str,
+                  new_filename='',
+                  new_image_dir='',
+                  new_annotation_dir=''):
+    """
+    Augments image with chosen methods.
+
+    :param image_path: Path to image to crop.
+    :param annotation_path: Path to annotation in xywhn (YOLO) format.
+    :param new_filename: Filename suffix to save image and annotation (without extension).
+    :param new_image_dir: Directory path to save cropped image.
+    :param new_annotation_dir: Directory path to save cropped image annotations in xywhn (YOLO) format.
+    """
+    assert new_image_dir != ''
+    assert new_annotation_dir != ''
+    os.makedirs(new_image_dir, exist_ok=True)
+    os.makedirs(new_annotation_dir, exist_ok=True)
+
+    image = cv2.imread(image_path)
+    annotation_list = read_yolo_annotation_to_list(annotation_path)
+
+    transform = A.Compose([
+        A.HorizontalFlip(),
+        A.RandomBrightnessContrast(),
+        A.RandomRain(),
+        A.RandomSnow()
+    ], bbox_params=A.BboxParams(format='yolo', min_visibility=0.5))
+    transformed = transform(image=image, bboxes=annotation_list)
+    transformed_image = transformed['image']
+    transformed_annotations = transformed['bboxes']
+
+    image_filename = f'{new_image_dir}/{new_filename}.jpg'
+    annotation_filename = f'{new_annotation_dir}/{new_filename}.txt'
+    cv2.imwrite(f'{image_filename}', transformed_image)
+
+    df_annotation = pd.DataFrame(transformed_annotations, columns=['x', 'y', 'w', 'h', 'label'])
+    df_annotation = df_annotation[['label', 'x', 'y', 'w', 'h']]
+    df_annotation.to_csv(annotation_filename, sep=' ', header=False, index=False)
