@@ -51,13 +51,12 @@ def selected_crop(image_path: str,
     annotation_list = read_yolo_annotation_to_list(annotation_path)
     annotation_count = min(annotation_count, len(annotation_list))
     scale = height / scale_height
-    new_height, new_width = max(int(new_height * scale), 256), max(int(new_width * scale), 256)
+    new_height, new_width = max(int(new_height * scale), new_height), max(int(new_width * scale), new_width)
 
     for i, annotation in enumerate(random.sample(annotation_list, annotation_count)):
         sample_w = float(annotation[2]) * width
         sample_h = float(annotation[3]) * height
         x1, y1 = float(annotation[0]) * width - sample_w / 2, float(annotation[1]) * height - sample_h / 2
-        # x2, y2 = x1 + sample_w, y1 + sample_h
 
         dx = random.uniform(max(0, new_width - width + x1), min(new_width - sample_w, x1))
         dy = random.uniform(max(0, new_height - height + y1), min(new_height - sample_h, y1))

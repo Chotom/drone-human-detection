@@ -131,10 +131,10 @@ def get_number_of_objects_stats(source_dir: str) -> pd.DataFrame:
 
 def remove_xywhn_img_with_small_obj_from_dir(img_source_dir: str, source_dir: str):
     """
+    Remove images from dir with too small objects.
 
-    :param source_dir:
-    :param img_source_dir:
-    :return:
+    :param img_source_dir: Directory with images.
+    :param source_dir: Directory with labels.
     """
 
     for filename in os.listdir(source_dir):
@@ -146,3 +146,46 @@ def remove_xywhn_img_with_small_obj_from_dir(img_source_dir: str, source_dir: st
             print(f'{source_dir}/{filename}')
             os.remove(f'{source_dir}/{filename}')
             os.remove(f'{img_source_dir}/{filename.split(".")[0]}.jpg')
+
+
+def remove_xywhn_img_with_big_obj_from_dir(img_source_dir: str, source_dir: str):
+    """
+    Remove images from dir with too small objects.
+
+    :param img_source_dir: Directory with images.
+    :param source_dir: Directory with labels.
+    """
+
+    for filename in os.listdir(source_dir):
+
+        annotations = pd.read_csv(f'{source_dir}/{filename}', sep=' ', names=['class', 'x', 'y', 'w', 'h'])
+
+        h_is_big: pd.Series = annotations['h'] > 0.40
+        if h_is_big.any():
+            print(f'{source_dir}/{filename}')
+            os.remove(f'{source_dir}/{filename}')
+            os.remove(f'{img_source_dir}/{filename.split(".")[0]}.jpg')
+
+
+def remove_img_below_min_brightness(img_source_dir: str, source_dir: str, min_brightness: int = 60):
+    """
+    Remove images from dir with too small objects.
+
+    :param img_source_dir: Directory with images.
+    :param source_dir: Directory with labels.
+    :param min_brightness: Value between 0 and 255.
+    """
+
+    for filename in os.listdir(img_source_dir):
+        img = cv2.imread(f'{img_source_dir}/{filename}')
+        # For RGB
+        if len(img.shape) == 3:
+            brightness = np.average(norm(img, axis=2)) / np.sqrt(3)
+        # Grayscale
+        else:
+            brightness = np.average(img)
+
+        if brightness < min_brightness:
+            print(f'{source_dir}/{filename}')
+            os.remove(f'{source_dir}/{filename.split(".")[0]}.txt')
+            os.remove(f'{img_source_dir}/{filename}')
