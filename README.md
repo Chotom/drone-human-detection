@@ -21,9 +21,8 @@ List of used datasets in the project. Follow instructions in notebooks to prepar
 | NII-CU                    | RGB + Thermal | [NII-CU](data_processing/notebooks/NII_CU.ipynb)                                       | [Link - nii-cu-multispectral.org](https://www.nii-cu-multispectral.org/)                                              |
 | Private Dataset           | RGB + Thermal | [private_dataset](data_processing/notebooks/private_dataset.ipynb)                     | Unavailable at this moment                                                                                            |
 
-Follow instructions in notebooks to combined above datasets.
+Follow instructions in notebook to combine above datasets.
 
 | Dataset name         | Data preparation notebook                                                             |
 |----------------------|---------------------------------------------------------------------------------------|
 | RGB Combined Dataset | [rgb_combined_dataset](data_processing/notebooks/combined/rgb_combined_dataset.ipynb) |
-| Thermal Dataset      |
